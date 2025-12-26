@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  const role = localStorage.getItem("role");
+  if (!role) {
+    window.location.replace("pages/login.html");
+  }
+})();
+</script>
+
+<title>AYLACLINIC</title>
+
+<link rel="stylesheet" href="../css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="brand">
+    <img src="../images/logo.png" alt="AYLACLINIC">
+    <strong>AYLACLINIC</strong>
+  </div>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="#about">عن العيادة</a>
+    <a href="#services">الخدمات</a>
+    <a href="doctors.html">الدكاترة</a>
+    <a href="products.html">العروض</a>
+        <a href="booking.html">الحجز</a>
+
+    <a href="contact.html">تواصل</a>
+      <a href="login.html" class="login-btn">تسجيل الدخول</a>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <h1>AYLACLINIC</h1>
+  <p>عيادة متخصصة في الجلدية، التجميل، والتغذية – مصراتة</p>
+</section>
+
+<!-- ===== ABOUT CLINIC ===== -->
+<section id="about" class="container">
+  <div class="grid" style="align-items:center">
+
+    <div>
+      <h2>عن عيادة AYLACLINIC</h2>
+
+      <p>
+        <strong>AYLACLINIC</strong> هي عيادة طبية متخصصة في
+        <b>الجلدية، التجميل، والتغذية</b>،
+        تقدم خدماتها في مدينة مصراتة
+        وفق أعلى معايير الجودة والسلامة.
+      </p>
+      <p>
+        نهدف إلى توفير رعاية صحية وتجميلية متكاملة
+        تعتمد على التشخيص الدقيق، الخطط العلاجية الواضحة،
+        والمتابعة المستمرة لتحقيق أفضل النتائج
+        بأسلوب احترافي ومحتشم.
+      </p>
+      <p>
+        يعمل في العيادة فريق طبي مختص
+        باستخدام أحدث الأجهزة الطبية
+        مع الحفاظ على الخصوصية التامة لكل مراجع.
+      </p>
+    </div>
+    <div>
+      <img src="../images/aylaa.jpeg" alt="عيادة AYLACLINIC" class="about-img">
+    </div>
+  </div>
+</section>
+<!-- ===== SERVICES (CLICKABLE) ===== -->
+<section id="services" class="container">
+  <h2>خدماتنا</h2>
+
+  <div class="grid">
+    <a href="#skin" class="card">
+      <img src="../images/service_skin.jpg">
+      <h3>الجلدية</h3>
+    </a>
+    <a href="#beauty"class="card">
+      <img src="../images/service_beauty.jpg">
+      <h3>التجميل</h3>
+    </a>
+
+    <a href="#nutrition" class="card">
+      <img src="../images/service_nutrition.jpg">
+      <h3>التغذية</h3>
+    </a>
+  </div>
+</section>
+
+<!-- ===== SERVICE DETAILS ===== -->
+
+<section id="skin" class="container service-details">
+  <h2>🧴 خدمات الجلدية</h2>
+  <p>
+    تقدم عيادة <strong>AYLACLINIC</strong> خدمات متكاملة
+    في تشخيص وعلاج جميع مشاكل البشرة باستخدام
+    أحدث الأساليب الطبية المعتمدة.
+  </p>
+  <ul>
+    <li>علاج حب الشباب وآثاره</li>
+    <li>التصبغات والكلف</li>
+    <li>الأكزيما وحساسية الجلد</li>
+    <li>تنظيف البشرة الطبي</li>
+    <li>وضع خطة عناية مخصصة لكل حالة</li>
+  </ul>
+</section>
+
+<section id="beauty" class="container service-details">
+  <h2>💉 خدمات التجميل</h2>
+  <p>
+    نهتم في <strong>AYLACLINIC</strong> بإبراز الجمال الطبيعي
+    بأسلوب آمن وغير جراحي مع الحفاظ على التناسق
+    والمظهر الصحي.
+  </p>
+  <ul>
+    <li>حقن البوتوكس</li>
+    <li>الفيلر التجميلي</li>
+    <li>جلسات نضارة البشرة</li>
+    <li>إجراءات تجميلية غير جراحية</li>
+  </ul>
+</section>
+
+<section id="nutrition" class="container service-details">
+  <h2>🥗 خدمات التغذية</h2>
+  <p>
+    تقدم العيادة برامج تغذية علاجية مصممة خصيصًا
+    حسب الحالة الصحية ونمط الحياة
+    مع متابعة مستمرة لتحقيق نتائج صحية.
+  </p>
+  <ul>
+    <li>إنقاص الوزن بطريقة صحية</li>
+    <li>زيادة الوزن بطريقة متوازنة</li>
+    <li>تنظيم نمط الأكل اليومي</li>
+    <li>برامج غذائية علاجية</li>
+  </ul>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2025 AYLACLINIC – مصراتة</p>
+  <p>جلدية • تجميل • تغذية</p>
+  <p>Instagram: @aylaclinic.misrata</p>
+</footer>
+
+
+
+
+</body>
+</html>

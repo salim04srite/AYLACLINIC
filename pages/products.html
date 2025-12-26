@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>العروض – AYLACLINIC</title>
+<link rel="stylesheet" href="../css/style.css">
+
+<script>
+const role = localStorage.getItem("role");
+</script>
+
+<!-- ✅ إضافة بسيطة لتغيير لون الخلية عند الاختيار -->
+<style>
+.offer.selected{
+  background: #eef7ff;
+  border: 2px solid #5aa9ff;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <img src="../images/logo.png">
+    <strong>AYLACLINIC</strong>
+  </div>\
+   <nav>
+<a href="../pages/index.html">الرئيسية</a>
+   </nav>
+</header>
+
+<section class="hero" style="padding:50px 20px">
+  <h1>اختيار العروض</h1>
+  <p>اختر الخدمات التي تناسبك</p>
+</section>
+
+<div class="container">
+
+<!-- الجلدية -->
+<div class="section">
+  <h2>🧴 الجلدية</h2>
+  <label class="offer">
+    <span>تنظيف البشرة</span>
+    <span>120 د.ل <input type="checkbox" data-id="skin_clean" data-name="تنظيف البشرة" data-price="120"></span>
+  </label>
+  <label class="offer">
+    <span>علاج حب الشباب</span>
+    <span>150 د.ل <input type="checkbox" data-id="skin_acne" data-name="علاج حب الشباب" data-price="150"></span>
+  </label>
+</div>
+
+<!-- التجميل -->
+<div class="section">
+  <h2>💉 التجميل</h2>
+  <label class="offer">
+    <span>جلسة نضارة</span>
+    <span>200 د.ل <input type="checkbox" data-id="beauty_glow" data-name="جلسة نضارة" data-price="200"></span>
+  </label>
+  <label class="offer">
+    <span>بوتوكس</span>
+    <span>300 د.ل <input type="checkbox" data-id="beauty_botox" data-name="بوتوكس" data-price="300"></span>
+  </label>
+</div>
+
+<!-- التغذية -->
+<div class="section">
+  <h2>🥗 التغذية</h2>
+  <label class="offer">
+    <span>برنامج تغذية</span>
+    <span>200 د.ل <input type="checkbox" data-id="nutri_plan" data-name="برنامج تغذية" data-price="200"></span>
+  </label>
+  <label class="offer">
+    <span>برنامج تخسيس</span>
+    <span>250 د.ل <input type="checkbox" data-id="nutri_slim" data-name="برنامج تخسيس" data-price="250"></span>
+  </label>
+</div>
+
+<div class="total-box" id="total">المجموع: 0 د.ل</div>
+
+<button style="width:100%" onclick="goBooking()">الانتقال للحجز</button>
+
+<!-- لوحة الأدمن (مخفية ولا تظهر إلا إذا role=admin) -->
+<div id="adminPanel" class="section" style="display:none;margin-top:25px">
+  <h2>لوحة الأدمن – تعديل العروض</h2>
+  <div id="adminEditor"></div>
+  <button type="button" id="saveOffersBtn" style="width:100%;margin-top:10px">حفظ التعديلات</button>
+  <div id="adminMsg" style="text-align:center;margin-top:10px"></div>
+</div>
+
+</div>
+
+<script>
+const checks = document.querySelectorAll('input[type="checkbox"]');
+const totalBox = document.getElementById("total");
+
+/** ✅ تغيير لون الخلية عند الاختيار */
+function toggleSelectedStyle(checkbox){
+  const label = checkbox.closest("label.offer");
+  if(!label) return;
+  label.classList.toggle("selected", checkbox.checked);
+}
+
+/** ====== بيانات افتراضية (مطابقة لما في الصفحة) ====== */
+const DEFAULT_OFFERS = [
+  { id:"skin_clean",   name:"تنظيف البشرة",   price:120 },
+  { id:"skin_acne",    name:"علاج حب الشباب", price:150 },
+  { id:"beauty_glow",  name:"جلسة نضارة",     price:200 },
+  { id:"beauty_botox", name:"بوتوكس",         price:300 },
+  { id:"nutri_plan",   name:"برنامج تغذية",   price:200 },
+  { id:"nutri_slim",   name:"برنامج تخسيس",   price:250 },
+];
+
+function loadOffers(){
+  const saved = localStorage.getItem("offersData");
+  return saved ? JSON.parse(saved) : DEFAULT_OFFERS;
+}
+
+function saveOffers(data){
+  localStorage.setItem("offersData", JSON.stringify(data));
+}
+
+/** ====== تطبيق البيانات على نفس الـ HTML بدون تغيير الشكل ====== */
+function applyOffersToDOM(offers){
+  offers.forEach(o=>{
+    const input = document.querySelector(`input[type="checkbox"][data-id="${o.id}"]`);
+    if(!input) return;
+
+    // تحديث بيانات checkbox المستخدمة في الحجز والحساب
+    input.dataset.name = o.name;
+    input.dataset.price = String(o.price);
+
+    // تحديث النصوص الظاهرة داخل نفس الـ label
+    const label = input.closest("label.offer");
+    if(label){
+      const spans = label.querySelectorAll("span");
+      if(spans && spans.length >= 2){
+        // span[0] اسم العرض
+        spans[0].textContent = o.name;
+
+        // span[1] السعر + checkbox (لا نريد تغيير الـ input)
+        spans[1].innerHTML = `${o.price} د.ل `;
+        spans[1].appendChild(input);
+      }
+    }
+  });
+
+  // بعد التحديث، احسب المجموع الحالي
+  calcTotal();
+
+  // ✅ لو في عناصر كانت محددة، خلي لونها يظهر بعد أي تحديث
+  checks.forEach(c => toggleSelectedStyle(c));
+}
+
+/** ====== حساب المجموع + تلوين العنصر المحدد ====== */
+checks.forEach(c=>{
+  c.addEventListener("change", ()=>{
+    toggleSelectedStyle(c);
+    calcTotal();
+  });
+});
+
+function calcTotal(){
+  let total = 0;
+  checks.forEach(c=>{
+    if(c.checked) total += +c.dataset.price;
+  });
+  totalBox.textContent = `المجموع: ${total} د.ل`;
+}
+
+/** ====== انتقال للحجز ====== */
+function goBooking(){
+  const items = [];
+  let total = 0;
+
+  checks.forEach(c=>{
+    if(c.checked){
+      items.push({name:c.dataset.name, price:+c.dataset.price});
+      total += +c.dataset.price;
+    }
+  });
+
+  if(items.length === 0){
+    alert("❌ اختر خدمة واحدة على الأقل");
+    return;
+  }
+
+  localStorage.setItem("bookingData", JSON.stringify({
+    services: items,
+    total: total
+  }));
+
+  window.location.href = "booking.html";
+}
+
+/** ====== لوحة الأدمن ====== */
+const adminPanel = document.getElementById("adminPanel");
+const adminEditor = document.getElementById("adminEditor");
+const saveBtn = document.getElementById("saveOffersBtn");
+const adminMsg = document.getElementById("adminMsg");
+
+let offers = loadOffers();
+applyOffersToDOM(offers);
+
+function renderAdminEditor(){
+  adminEditor.innerHTML = offers.map((o, idx)=>`
+    <div style="display:grid;grid-template-columns:1fr 140px;gap:10px;margin-bottom:10px;align-items:center">
+      <input data-idx="${idx}" data-field="name" value="${o.name}" style="width:100%">
+      <input data-idx="${idx}" data-field="price" type="number" min="0" value="${o.price}" style="width:100%">
+    </div>
+  `).join("");
+}
+
+if(role === "admin"){
+  adminPanel.style.display = "block";
+  renderAdminEditor();
+
+  saveBtn.addEventListener("click", ()=>{
+    adminEditor.querySelectorAll("input[data-idx]").forEach(inp=>{
+      const idx = +inp.dataset.idx;
+      const field = inp.dataset.field;
+
+      if(field === "price"){
+        const v = Number(inp.value);
+        offers[idx][field] = isNaN(v) ? 0 : v;
+      }else{
+        offers[idx][field] = inp.value.trim();
+      }
+    });
+
+    saveOffers(offers);
+    applyOffersToDOM(offers);
+
+    adminMsg.textContent = "✅ تم حفظ التعديلات";
+    adminMsg.style.color = "green";
+  });
+}
+</script>
+
+</body>
+</html>

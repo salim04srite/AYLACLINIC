@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>الحجز</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+<div class="brand">
+<img src="../images/logo.png">
+<strong>AYLACLINIC</strong>
+</div>
+<nav>
+<a href="../pages/index.html">الرئيسية</a>
+<a href="../pages/doctors.html">الدكاترة</a>
+<a href="../pages/booking.html">الحجز</a>
+<a href="../pages/contact.html">تواصل</a>
+</nav>
+</header>
+
+<div class="container">
+
+<form id="bookingForm">
+<input name="name" placeholder="الاسم الكامل" required>
+<input type="email" placeholder="البريد الإلكتروني">
+<input type="tel" placeholder="رقم الهاتف">
+
+<select name="service">
+<option>جلدية</option>
+<option>تجميل</option>
+<option>تغذية</option>
+</select>
+
+<!-- أضفنا فقط id بدون تغيير الشكل -->
+<select name="doctor" id="doctorSelect">
+<option>د. آية</option>
+<option>د. محمد</option>
+<option>أ. سارة</option>
+</select>
+
+<input type="date" name="date">
+<input type="time" name="time">
+
+<textarea placeholder="ملاحظات إضافية (اختياري)"></textarea>
+
+<button type="submit">تأكيد الحجز</button>
+</form>
+
+<p id="msg"></p>
+
+<!-- ===== الفاتورة (ستظهر تلقائيًا) ===== -->
+<div id="invoice" class="card" style="display:none;margin-top:20px"></div>
+
+</div>
+
+<footer>
+<p>© 2025 AYLACLINIC – Misrata</p>
+<p>Dermatology • Aesthetics • Nutrition</p>
+<p>Instagram: @aylaclinic.misrata</p>
+</footer>
+
+<script src="../js/main.js"></script>
+
+<!-- ===== إضافة: تعبئة الدكاترة من localStorage (بدون تغيير أي تصميم) ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const doctorSelect = document.getElementById("doctorSelect");
+
+  // افتراضي مطابق للخيارات الموجودة أصلًا في الصفحة
+  const DEFAULT_DOCTORS = [
+    { name: "د. آية" },
+    { name: "د. محمد" },
+    { name: "أ. سارة" },
+  ];
+
+  function loadDoctors(){
+    const saved = localStorage.getItem("doctorsData");
+    // doctorsData قد يكون فيه {id,img,name,specialty} من صفحة doctors
+    return saved ? JSON.parse(saved) : DEFAULT_DOCTORS;
+  }
+
+  const doctors = loadDoctors();
+
+  // لو البيانات موجودة، نعبيها هنا
+  if(Array.isArray(doctors) && doctors.length){
+    doctorSelect.innerHTML = doctors
+      .map(d => `<option>${(d && d.name) ? d.name : ""}</option>`)
+      .join("");
+  }
+});
+</script>
+
+<!-- ===== كود الفاتورة فقط (الإضافة) ===== -->
+<script>
+const form = document.getElementById("bookingForm");
+const invoice = document.getElementById("invoice");
+
+form.addEventListener("submit", function(e){
+  e.preventDefault();
+
+  // بيانات النموذج
+  const name = form.elements["name"].value;
+  const service = form.elements["service"].value;
+  const doctor = form.elements["doctor"].value;
+  const date = form.elements["date"].value;
+  const time = form.elements["time"].value;
+
+  // العروض المختارة (إن وُجدت)
+  const bookingData = JSON.parse(localStorage.getItem("bookingData")) || {services:[], total:0};
+
+  let servicesList = "";
+  bookingData.services.forEach(s=>{
+    servicesList += `<li>${s.name} - ${s.price} د.ل</li>`;
+  });
+
+  invoice.innerHTML = `
+    <img src="../images/logo.png" style="width:120px;display:block;margin:auto">
+    <h2 style="text-align:center">فاتورة الحجز</h2>
+
+    <p><strong>الاسم:</strong> ${name}</p>
+    <p><strong>الخدمة:</strong> ${service}</p>
+    <p><strong>الدكتور:</strong> ${doctor}</p>
+    <p><strong>التاريخ:</strong> ${date}</p>
+    <p><strong>الوقت:</strong> ${time}</p>
+
+    <h3>الخدمات المختارة:</h3>
+    <ul>${servicesList || "<li>لم يتم اختيار عروض</li>"}</ul>
+
+    <h3 style="text-align:center;color:#6c3483">
+      الإجمالي: ${bookingData.total || 0} د.ل
+    </h3>
+  `;
+
+  invoice.style.display = "block";
+});
+</script>
+
+</body>
+</html>

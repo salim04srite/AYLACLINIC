@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تواصل – AYLACLINIC</title>
+
+<link rel="stylesheet" href="../css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== Contact Page ===== */
+</style>
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="brand">
+    <img src="../images/logo.png" alt="AYLACLINIC">
+    <strong>AYLACLINIC</strong>
+  </div>
+  <nav>
+    <a href="../pages/index.html">الرئيسية</a>
+    <a href="services.html">الخدمات</a>
+    <a href="doctors.html">الدكاترة</a>
+    <a href="booking.html">الحجز</a>
+    <a href="contact.html">تواصل</a>
+  </nav>
+</header>
+
+<!-- ===== PAGE TITLE ===== -->
+<section class="hero" style="padding:60px 20px">
+  <h1>تواصل معنا</h1>
+  <p>نحن هنا لخدمتك والإجابة على استفساراتك</p>
+</section>
+
+<div class="container">
+
+  <!-- ===== Contact Info ===== -->
+  <div class="contact-info">
+    <p>📍 مصراتة – الدائري الثاني</p>
+    <p>📞 +218 947684000</p>
+<p>
+  📸 Instagram:
+  <a 
+    href="https://www.instagram.com/aylaclinic.misrata?igsh=dTY1YTdndmtrOWg0"
+    target="_blank"
+    class="instagram-link">
+    @aylaclinic.misrata
+  </a>
+</p>
+  </div>
+
+  <!-- ===== Google Map ===== -->
+  <div class="map-container">
+    <iframe
+      src="https://www.google.com/maps?q=32.3754,15.0925&output=embed"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2025 AYLACLINIC – Misrata</p>
+  <p>Dermatology • Aesthetics • Nutrition</p>
+  <p>Instagram: @aylaclinic.misrata</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", ()=>{
+  const role = localStorage.getItem("role");
+  if(!role){
+    window.location.replace("login.html");
+  }
+});
+</script>
+
+
+
+</body>
+</html>

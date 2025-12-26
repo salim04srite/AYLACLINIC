@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تسجيل الدخول</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header>  <nav>  
+<a href="../pages/index.html">الرئيسية</a>
+  </nav>
+</header>
+
+<div class="container">
+  <form id="loginForm" class="card">
+    <h2 style="text-align:center">تسجيل الدخول</h2>
+
+    <input type="text" id="username" placeholder="اسم المستخدم" required>
+    <input type="password" id="password" placeholder="كلمة المرور" required>
+
+    <button type="submit">دخول</button>
+    <p id="error" style="color:red;text-align:center;margin-top:10px"></p>
+  </form>
+</div>
+
+<script>
+const users = [
+  { username: "admin", password: "1234", role: "admin" },
+  { username: "user",  password: "1234", role: "user" }
+];
+
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const u = username.value;
+  const p = password.value;
+
+  const found = users.find(x => x.username === u && x.password === p);
+
+  if(found){
+    localStorage.setItem("role", found.role);
+    window.location.href = "../index.html";
+  }else{
+    error.textContent = "❌ بيانات الدخول غير صحيحة";
+  }
+});
+</script>
+
+</body>
+</html>
